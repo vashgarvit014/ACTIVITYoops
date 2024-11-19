@@ -1,0 +1,7 @@
+The searchByTicketNumber() function is designed to locate a specific ticket in the system based on its unique ticket number. When invoked, the function takes the ticket number as input and searches through the collection of tickets stored in the system.
+
+If the tickets are stored in a sequential data structure like a list or array, the function performs a linear search, comparing each ticket’s number with the input until a match is found or the end of the collection is reached. However, if tickets are stored in a more efficient structure like a hash map or dictionary, the function can directly access the ticket using the ticket number as a key, resulting in a faster lookup.
+
+Once the matching ticket is located, the function retrieves and returns the associated ticket object, which may include details such as the passenger’s name, travel date, seat number, and destination. If no ticket with the provided number exists, the function typically returns an error message or a null value, indicating the search was unsuccessful.
+
+This function is crucial for quick access to ticket information, enhancing the user experience and the overall efficiency of the ticket reservation system.
