@@ -1,0 +1,9 @@
+If an array of pointers were not used to manage passengers, the system would instead store entire passenger objects directly in the array, leading to several significant drawbacks.
+
+Firstly, storing full objects increases memory usage, especially if the Passenger class contains large or complex data structures. Each operation involving passenger data, such as copying or updating, would require duplicating the entire object, resulting in performance overhead. This inefficiency would worsen as the number of passengers grows.
+
+Secondly, the system would lose flexibility in memory management. With pointers, objects can be dynamically allocated and deallocated, but storing objects directly ties the system to a fixed array size or requires implementing more complex resizing mechanisms. This rigidity reduces the system’s scalability and adaptability to changing requirements.
+
+Polymorphism, which allows the system to handle derived classes (e.g., regular or VIP passengers) seamlessly, would also become problematic. Pointers enable storing objects of derived classes in a base class array, but storing full objects directly would eliminate this capability.
+
+Finally, managing and sharing passenger data across different components would become cumbersome, as data would need to be copied instead of simply referencing the same object. In contrast, pointers simplify data sharing, improving system efficiency and maintainability.
