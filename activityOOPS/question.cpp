@@ -1,122 +1,119 @@
-#include<iostream>
+#include <iostream>
 using namespace std;
 
-class Passenger{
+class Passenger {
 private:
-    string name;
-    int age;
-    int ticket_no;
-public:
-    Passenger() {
-
-    } 
-    Passenger(string name,int age,int ticket_no) {
-        this->age=age;
-        this->name=name;
-        this->ticket_no=ticket_no;
-    }
-    string getName(){
-     return name;
-    }
-    int getTicket(){
-        return ticket_no; 
-    } 
-    
-       public:
-   
-  virtual void displayDetails() const{ 
-        cout<<"name:"<<name<<endl;
-        cout<<"age:"<<age<<endl;
-        cout<<"ticket_no"<<ticket_no<<endl;
-
-    }
-
-};
-class FirstclassTicket : public Passenger{
-    public:
-    FirstclassTicket(string name,int age,int ticket_no):Passenger(name,age,ticket_no){
-
-    }
-     void displayDetails() const override {
-        cout << "First Class Ticket:\n";
-        Passenger::displayDetails();
-        cout << " Perks such as Priority boarding, complimentary meals" << endl;
-    }
-
-};
-class EconomyclassTicket : public Passenger{
-    public:
-    EconomyclassTicket(string name,int age,int ticket_no):Passenger(name,age,ticket_no){
-
-    }
-   void displayDetails() const override {
-        cout << "Economy Class Ticket:\n";
-        Passenger::displayDetails();
-        cout << " Perks such as basic boarding,normal meals" << endl;
-    }
-
-};
-
-    class TicketReservationSystem {
-private:
-    Passenger* passengers[100];
-    int currentSize;
+    char name[50];     
+    int age;           
+    char gender[10];   
+    int ticketNumber;  
 
 public:
-    TicketReservationSystem() : currentSize(0) {
-        for (int i = 0; i < 100; ++i) {
-            passengers[i] = nullptr; 
-        }
+
+    Passenger() : age(0), ticketNumber(0) {
+        name[0] = '0';
+        gender[0] = '0';
     }
 
-    ~TicketReservationSystem() {
-        
-        for (int i = 0; i < currentSize; ++i) {
-            delete passengers[i];
+
+    void setDetails(const char pname[], int page, const char pgender[], int pticketNumber) {
+
+        int i = 0;
+        while (pname[i] != '0' && i < 50) {
+            name[i] = pname[i];
+            i++;
         }
+        name[i] = '0'; 
+
+
+        i = 0;
+        while (pgender[i] != '0' && i < 10) {
+            gender[i] = pgender[i];
+            i++;
+        }
+        gender[i] = 'g'; 
+
+        age = page;
+        ticketNumber = pticketNumber;
     }
 
-    void addPassenger(Passenger* passenger) {
-        if (currentSize < 100) {
-            passengers[currentSize] = passenger; // Store the pointer directly
-            currentSize++;
-            cout << "Passenger added successfully.\n";
+
+    int getTicketNumber() const {
+        return ticketNumber;
+    }
+
+    void display() const {
+        cout << "Ticket Number: " << ticketNumber
+             << ", Name: " << name
+             << ", Age: " << age
+             << ", Gender: " << gender << endl;
+    }
+};
+
+class TicketReservationSystem {
+private:
+    Passenger passengers[100]; 
+    int passengerCount;         
+
+public:
+
+    TicketReservationSystem() : passengerCount(0) {}
+
+
+    void addPassenger(const char pname[], int page, const char pgender[], int pticketNumber) {
+        if (passengerCount < 100) {
+            passengers[passengerCount].setDetails(pname, page, pgender, pticketNumber);
+            passengerCount++;
         } else {
-            cout << "Reservation system is full. Cannot add more passengers.\n";
+            cout << "Maximum passenger limit reached!" << endl;
         }
     }
 
-    void searchPassengerByTicket(int ticketNumber) const {
-        for (int i = 0; i < currentSize; ++i) {
-            if (passengers[i]->getTicket() == ticketNumber) {
-                cout << "Passenger found:\n";
-                passengers[i]->displayDetails();
-                return;
+
+    void displayPassengers() const {
+        if (passengerCount == 0) {
+            cout << "No passengers in the system." << endl;
+        } else {
+            for (int i = 0; i < passengerCount; i++) {
+                passengers[i].display();
             }
         }
-        cout << "No passenger found with Ticket Number: " << ticketNumber << "\n";
     }
 
-    void displayAllPassengers() const {
-        if (currentSize == 0) {
-            cout << "No passengers in the system.\n";
-            return;
+
+    void searchPassengerByTicketNumber(int ticketNumber) const {
+        bool found = false;
+        for (int i = 0; i < passengerCount; i++) {
+            if (passengers[i].getTicketNumber() == ticketNumber) {
+                passengers[i].display();
+                found = true;
+                break;
+            }
         }
-        cout << "Passenger List:\n";
-        for (int i = 0; i < currentSize; ++i) {
-            passengers[i]->displayDetails();
+        if (!found) {
+            cout << "Passenger with ticket number " << ticketNumber << " not found." << endl;
         }
     }
 };
 
 int main() {
     TicketReservationSystem system;
-    system.addPassenger(new FirstclassTicket("GARVIT", 19, 11123));
-    system.addPassenger(new EconomyclassTicket("manish", 22, 102234));
 
-    system.displayAllPassengers();
-    system.searchPassengerByTicket(1014334);
-    system.searchPassengerByTicket(999343);
+
+    system.addPassenger("XYZZZZZ", 30, "male", 101);
+    system.addPassenger("XYZZZZ", 25, "Male", 102);
+    system.addPassenger("XYZZ", 35, "FEMale", 103);
+
+
+    cout << "Displaying all passengers:" << endl;
+    system.displayPassengers();
+
+
+    cout << "\nSearching for passenger with ticket number 102:" << endl;
+    system.searchPassengerByTicketNumber(102);
+
+
+  
 
     return 0;
 }
